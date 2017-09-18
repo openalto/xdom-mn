@@ -2,10 +2,10 @@
 
 from mininet.net import Mininet
 from mininet.node import RemoteController, OVSSwitch
-from mininet.link import Link
 from mininet.log import setLogLevel, info
 
-from util.multicli import MCLI
+from xdommn.multicli import MCLI
+from xdommn.interconnection import InterConnection
 
 def crossdomain():
     """
@@ -21,6 +21,7 @@ def crossdomain():
     """
     net1 = Mininet()
     net2 = Mininet()
+    interconnection = InterConnection()
 
     info('*** Initiating net1 ***\n')
     c1 = RemoteController('c1', ip='172.17.0.2', port=6633)
@@ -61,12 +62,7 @@ def crossdomain():
     net2.addController(c2)
 
     info('*** Adding interconnection link ***\n')
-    interconnections = []
-    options = dict()
-    options.setdefault( 'addr1', Mininet.randMac() )
-    options.setdefault( 'addr2', Mininet.randMac() )
-    link = Link( n1s1, n2s1, **options )
-    interconnections.append( link )
+    interconnection.addLink(n1s1, n2s1)
 
     info('*** Starting net1 ***\n')
     net1.start()
@@ -79,9 +75,7 @@ def crossdomain():
 
     info('*** Stopping network ***\n')
 
-    info('***** Stopping interconnections *****\n')
-    for l in interconnections:
-        l.stop()
+    interconnection.stop()
 
     info('***** Stopping net1 *****\n')
     net1.stop()
