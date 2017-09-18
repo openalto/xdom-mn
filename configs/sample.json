@@ -1,0 +1,67 @@
+{
+  "domains": {
+    "net1": {
+      "controller": {
+        "name": "c1",
+        "ip": "172.17.0.2",
+        "port": 6633
+      },
+      "switches": {
+        "n1s1": {
+          "class": "OVSSwitch"
+        },
+        "n1s2": {
+          "class": "OVSSwitch"
+        }
+      },
+      "hosts": {
+        "n1h1": {
+          "ip": "10.0.1.251"
+        }
+      },
+      "links": [
+        ["n1s1", "n1s2"],
+        ["n1h1", "n1s2"]
+      ]
+    },
+    "net2": {
+      "controller": {
+        "name": "c2",
+        "ip": "172.17.0.3",
+        "port": 6633
+      },
+      "switches": {
+        "n2s1": {
+          "class": "OVSSwitch"
+        },
+        "n2s2": {
+          "class": "OVSSwitch"
+        },
+        "n2s3": {
+          "class": "OVSSwitch"
+        }
+      },
+      "hosts": {
+        "n2h1": {
+          "ip": "10.0.2.251"
+        },
+        "n2h2": {
+          "ip": "10.0.2.252"
+        }
+      },
+      "links":[
+        ["n2s1", "n2s2"],
+        ["n2s1", "n2s3"],
+        ["n2h1", "n2s2"],
+        ["n2h2", "n2s3"]
+      ]
+    }
+  },
+  "interconnections": [
+    {
+      "node1": "n1s1",
+      "node2": "n2s1",
+      "addr1": "a6:89:7c:6e:c9:b3"
+    }
+  ]
+}
