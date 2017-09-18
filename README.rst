@@ -3,12 +3,15 @@ XDom-MN
 
 Mininet extensions for inter-domain simulation.
 
-TODO:
+Features:
 
--  [x] A CLI extension for multiple domain management.
--  [ ] An easy-to-use network template framework for inter-domain
+-  A CLI extension for multiple domain management.
+
+TODOs:
+
+-  An easy-to-use network template framework for inter-domain
    simulation.
--  [ ] A cluster deployer for large-scale test.
+-  A cluster deployer for large-scale test.
 
 Prerequisites
 -------------
@@ -20,6 +23,6 @@ You need to install mininet_ first.
 Installation
 ------------
 
-.. highlight:: sh
+.. code-block:: sh
 
     python setup.py install
