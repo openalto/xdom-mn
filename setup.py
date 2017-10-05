@@ -1,11 +1,16 @@
+#!/usr/bin/env python2
+
 from setuptools import setup
 from os import path, listdir
+
 
 def read(fname):
     return open(path.join(path.dirname(__file__), fname)).read()
 
+
 def files(dirname):
     return [path.join(dirname, filename) for filename in listdir(dirname)]
+
 
 setup(
     name='xdommn',
