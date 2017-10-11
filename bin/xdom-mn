@@ -3,10 +3,7 @@
 import sys
 
 try:
-    from mininet.log import setLogLevel, info
-    from mininet.net import Mininet
-    from mininet.node import RemoteController, OVSSwitch
-    from mininet.link import Link
+    from mininet.log import setLogLevel
 except:
     sys.stderr.write('You need to install mininet first.\n')
     sys.exit(-1)
@@ -15,9 +12,12 @@ import argparse
 import json
 import xdommn.session
 
+
 def InitParser():
-    parser = argparse.ArgumentParser(prog="./setup.py", description="Start an inter-domain mininet")
-    parser.add_argument("-c", help="choose a config file", metavar="CONFIG", required=True)
+    parser = argparse.ArgumentParser(prog="./setup.py",
+                                     description="Start an inter-domain mininet")
+    parser.add_argument("-c", help="choose a config file",
+                        metavar="CONFIG", required=True)
     args = parser.parse_args()
     return args
 
