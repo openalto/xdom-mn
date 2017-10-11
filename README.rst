@@ -26,3 +26,30 @@ Installation
 .. code-block:: sh
 
     python setup.py install
+
+Usage
+-----
+
+.. code-block:: sh
+
+   sudo ./bin/xdom-mn -c configs/sample.json
+
+In the shell
+------------
+
+.. code-block::
+
+   help                   Show help documentations
+   help <topic>           Show the usage of a topic
+   ls                     Show all avaiable domains
+   net <domain>           Choose a domain and connect to its mininet shell
+   exit/quit              Exit the console
+   execute <command>      run a command on the cross-domain environment
+
+Example
+-------
+
+.. code-block::
+
+   execute net1:n1h1 ping net2:n2h2
+
