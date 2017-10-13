@@ -47,8 +47,10 @@ def Start(data):
 
         info('*** Adding hosts to ' + name + ' ***\n')
         for host_name in domains_data[name]["hosts"].keys():
+            info(name + ":" + host_name + ' ')
             host_ip = domains_data[name]["hosts"][host_name]["ip"]
             nodes[host_name] = domains[name].addHost(host_name, ip=host_ip)
+        info("\n")
 
         info('*** Adding links to ' + name + ' ***\n')
         for link in domains_data[name]["links"]:
@@ -56,6 +58,14 @@ def Start(data):
 
         info('*** Adding controllers to ' + name + ' ***\n')
         domains[name].addController(controllers[name])
+
+    info("*** Adding interconnections between networks ***\n")
+    interconnection_data = convert(data["interconnections"])
+    for connection in interconnection_data:
+        info(connection["node1"] + "<-->" + connection["node2"])
+        interconnection.addLink(nodes[connection["node1"]],
+                                nodes[connection["node2"]])
+    info("\n")
 
     for name in domains.keys():
         domains[name].start()

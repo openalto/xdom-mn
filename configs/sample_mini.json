@@ -1,0 +1,50 @@
+{
+  "domains": {
+    "net1": {
+      "controller": {
+        "name": "c1",
+        "ip": "192.168.1.22",
+        "port": 6633
+      },
+      "switches": {
+        "n1s1": {
+          "class": "OVSSwitch"
+        }
+      },
+      "hosts": {
+        "n1h1": {
+          "ip": "10.0.1.251"
+        }
+      },
+      "links": [
+        ["n1h1", "n1s1"]
+      ]
+    },
+    "net2": {
+      "controller": {
+        "name": "c2",
+        "ip": "192.168.1.195",
+        "port": 6633
+      },
+      "switches": {
+        "n2s1": {
+          "class": "OVSSwitch"
+        }
+      },
+      "hosts": {
+        "n2h1": {
+          "ip": "10.0.2.251"
+        }
+      },
+      "links":[
+          ["n2s1", "n2h1"]
+      ]
+    }
+  },
+  "interconnections": [
+    {
+      "node1": "n1s1",
+      "node2": "n2s1"
+    }
+  ]
+}
