@@ -1,5 +1,7 @@
 #! /usr/bin/env python
 
+import collections
+
 from mininet.log import info
 from mininet.net import Mininet
 from mininet.node import OVSSwitch, RemoteController
@@ -8,8 +10,19 @@ from .interconnection import InterConnection
 from .multicli import MCLI
 
 
+def convert(data):
+    if isinstance(data, basestring):
+        return str(data)
+    elif isinstance(data, collections.Mapping):
+        return dict(map(convert, data.iteritems()))
+    elif isinstance(data, collections.Iterable):
+        return type(data)(map(convert, data))
+    else:
+        return data
+
+
 def Start(data):
-    domains_data = data["domains"]
+    domains_data = convert(data["domains"])
     domains = {}
     controllers = {}
     nodes = {}
