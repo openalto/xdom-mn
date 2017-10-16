@@ -57,6 +57,15 @@ def Start(data):
             l1 = net.addLink(node1, node2)
             links.add(l1)
 
+    interconnection_data = convert(data["interconnections"])
+    for interconnection in interconnection_data:
+        node1 = Data().getBackEndName(interconnection["node1"])
+        node2 = Data().getBackEndName(interconnection["node2"])
+        node1 = nodes[node1]
+        node2 = nodes[node2]
+        l1 = net.addLink(node1, node2)
+        links.add(l1)
+
     info("*** Starting network\n")
     net.build()
 

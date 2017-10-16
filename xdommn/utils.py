@@ -16,3 +16,7 @@ def convert(data):
 
 def getWholeName(domain_name, node_name):
     return "%s_%s" % (domain_name, node_name)
+
+
+def splitWholeName(frontEndName):
+    return frontEndName.split("_")[:2]

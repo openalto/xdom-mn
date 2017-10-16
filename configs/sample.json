@@ -59,9 +59,8 @@
   },
   "interconnections": [
     {
-      "node1": "net1:n1s1",
-      "node2": "net2:n2s1"
+      "node1": "net1_s1",
+      "node2": "net2_s1"
     }
   ]
 }
->>>>>>> single_mn
