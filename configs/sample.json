@@ -3,7 +3,7 @@
     "net1": {
       "controller": {
         "name": "c1",
-        "ip": "172.17.0.2",
+        "ip": "192.168.1.22",
         "port": 6633
       },
       "switches": {
@@ -27,7 +27,7 @@
     "net2": {
       "controller": {
         "name": "c2",
-        "ip": "172.17.0.3",
+        "ip": "192.168.1.239",
         "port": 6633
       },
       "switches": {

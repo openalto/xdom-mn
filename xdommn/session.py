@@ -7,6 +7,7 @@ from mininet.link import OVSLink
 from .data import Data
 
 from .utils import convert, getWholeName
+from .crossdomain import CrossDomainSwitch
 
 
 def Start(data):
@@ -18,7 +19,7 @@ def Start(data):
     nodes = dict()
     switches = dict()
     controllers = dict()
-    net = Mininet(controller=RemoteController, switch=OVSSwitch, host=Host)
+    net = Mininet(controller=RemoteController, switch=CrossDomainSwitch, host=Host)
 
     for domain_name in domains_data.keys():
         controller_name = domains_data[domain_name]["controller"]["name"]
@@ -61,7 +62,9 @@ def Start(data):
 
     info("*** Starting Controllers ***\n")
     for controller in controllers.values():
+        info("%s " % controller.name)
         controller.start()
+    info("\n")
 
     for switch in switches.values():
         switch.start([c1])
