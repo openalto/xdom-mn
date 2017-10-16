@@ -24,6 +24,7 @@ class Data(object):
         name = "%s%d" % (prefix, self.name_map_index)
         self.name_map[node_name] = name
         self.reverse_name_map[name] = node_name
+        self.name_map_index += 1
         return name
 
     def getBackEndName(self, node_name):

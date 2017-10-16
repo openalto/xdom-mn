@@ -1,12 +1,11 @@
 from mininet.log import info
 from mininet.net import Mininet
-from mininet.node import OVSSwitch, RemoteController
+from mininet.node import OVSSwitch, RemoteController, Host
 from mininet.cli import CLI
 from mininet.link import OVSLink
 
 from .data import Data
 
-from .crossdomain import CrossDomainSwitch
 from .utils import convert, getWholeName
 
 
@@ -19,7 +18,7 @@ def Start(data):
     nodes = dict()
     switches = dict()
     controllers = dict()
-    net = Mininet(controller=RemoteController, switch=CrossDomainSwitch)
+    net = Mininet(controller=RemoteController, switch=OVSSwitch, host=Host)
 
     for domain_name in domains_data.keys():
         controller_name = domains_data[domain_name]["controller"]["name"]
@@ -32,24 +31,26 @@ def Start(data):
         info("*** Adding switches to %s ***\n" % (domain_name))
         for switch_name in domains_data[domain_name]["switches"].keys():
             switch_whole_name = getWholeName(domain_name, switch_name)
+            backend_name = Data().getNextName(switch_whole_name, prefix='s')
 
             # Register the controller name of the switch in Data singleton
-            Data().controllers[switch_whole_name] = controller_name
-            s1 = net.addSwitch(switch_whole_name)
-            switches[switch_whole_name] = s1
-            nodes[switch_whole_name] = s1
+            Data().controllers[backend_name] = c1
+            s1 = net.addSwitch(backend_name)
+            switches[backend_name] = s1
+            nodes[backend_name] = s1
 
         info("*** Adding hosts to %s ***\n" % (domain_name))
         for host_name in domains_data[domain_name]["hosts"].keys():
             host_whole_name = getWholeName(domain_name, host_name)
-            h1 = net.addHost(host_whole_name)
-            hosts[host_whole_name] = h1
-            nodes[host_whole_name] = h1
+            backend_name = Data().getNextName(host_whole_name, prefix='h')
+            h1 = net.addHost(backend_name)
+            hosts[backend_name] = h1
+            nodes[backend_name] = h1
 
         info("*** Adding Links to %s ***\n" % (domain_name))
         for link in domains_data[domain_name]["links"]:
-            node1 = getWholeName(domain_name, link[0])
-            node2 = getWholeName(domain_name, link[1])
+            node1 = Data().getBackEndName(getWholeName(domain_name, link[0]))
+            node2 = Data().getBackEndName(getWholeName(domain_name, link[1]))
             node1 = nodes[node1]
             node2 = nodes[node2]
             l1 = net.addLink(node1, node2)
