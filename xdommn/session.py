@@ -1,81 +1,76 @@
-#! /usr/bin/env python
-
-import collections
-
 from mininet.log import info
 from mininet.net import Mininet
-from mininet.node import OVSSwitch, RemoteController
+from mininet.node import OVSSwitch, RemoteController, Host
+from mininet.link import OVSLink
 
-from .interconnection import InterConnection
-from .multicli import MCLI
+from .data import Data
 
-
-def convert(data):
-    if isinstance(data, basestring):
-        return str(data)
-    elif isinstance(data, collections.Mapping):
-        return dict(map(convert, data.iteritems()))
-    elif isinstance(data, collections.Iterable):
-        return type(data)(map(convert, data))
-    else:
-        return data
+from .utils import convert, getWholeName
+from .crossdomain import CrossDomainSwitch, CrossDomainCLI, CrossDomainMininet, CrossDomainLink
 
 
 def Start(data):
+    "Create a network from semi-scratch with multiple controllers."
+
     domains_data = convert(data["domains"])
-    domains = {}
-    controllers = {}
-    nodes = {}
-    interconnection = InterConnection()
-    for name in domains_data.keys():
-        domains[name] = Mininet()
-    for name in domains_data.keys():
-        info('*** Initiating ' + name + ' ***\n')
-        controller_ip = domains_data[name]["controller"]["ip"]
-        controller_name = domains_data[name]["controller"]["name"]
-        controller_port = domains_data[name]["controller"]["port"]
-        controller = RemoteController(
-            controller_name, ip=controller_ip, port=controller_port)
-        controllers[name] = controller
+    links = set()
+    hosts = dict()
+    nodes = dict()
+    switches = dict()
+    controllers = dict()
+    net = CrossDomainMininet(controller=RemoteController, switch=CrossDomainSwitch, link=CrossDomainLink, host=Host)
 
-        info('*** Adding switches to ' + name + ' ***\n')
-        for switch_name in domains_data[name]["switches"].keys():
-            # switch_class = domains_data[name]["switches"][switch_name]["class"]
-            switch_class = OVSSwitch
-            nodes[switch_name] = domains[name].addSwitch(
-                switch_name, switch_class)
+    for domain_name in domains_data.keys():
+        controller_name = domains_data[domain_name]["controller"]["name"]
+        controller_ip = domains_data[domain_name]["controller"]["ip"]
+        controller_port = domains_data[domain_name]["controller"]["port"]
+        info("*** Connecting to Remote controller: %s \n" % (controller_name))
+        c1 = net.addController(controller_name, ip=controller_ip, port=controller_port)
+        controllers[controller_name] = c1
+        Data().addSameName(controller_name)
 
-        info('*** Adding hosts to ' + name + ' ***\n')
-        for host_name in domains_data[name]["hosts"].keys():
-            info(name + ":" + host_name + ' ')
-            host_ip = domains_data[name]["hosts"][host_name]["ip"]
-            nodes[host_name] = domains[name].addHost(host_name, ip=host_ip)
-        info("\n")
+        info("*** Adding switches to %s ***\n" % (domain_name))
+        for switch_name in domains_data[domain_name]["switches"].keys():
+            switch_whole_name = getWholeName(domain_name, switch_name)
+            backend_name = Data().getNextName(switch_whole_name, prefix='s')
 
-        info('*** Adding links to ' + name + ' ***\n')
-        for link in domains_data[name]["links"]:
-            domains[name].addLink(nodes[link[0]], nodes[link[1]])
+            # Register the controller name of the switch in Data singleton
+            Data().controllers[backend_name] = c1
+            s1 = net.addSwitch(backend_name)
+            switches[backend_name] = s1
+            nodes[backend_name] = s1
 
-        info('*** Adding controllers to ' + name + ' ***\n')
-        domains[name].addController(controllers[name])
+        info("*** Adding hosts to %s ***\n" % (domain_name))
+        for host_name in domains_data[domain_name]["hosts"].keys():
+            host_whole_name = getWholeName(domain_name, host_name)
+            backend_name = Data().getNextName(host_whole_name, prefix='h')
+            h1 = net.addHost(backend_name)
+            hosts[backend_name] = h1
+            nodes[backend_name] = h1
 
-    info("*** Adding interconnections between networks ***\n")
-    interconnection_data = convert(data["interconnections"])
-    for connection in interconnection_data:
-        info(connection["node1"] + "<-->" + connection["node2"])
-        interconnection.addLink(nodes[connection["node1"]],
-                                nodes[connection["node2"]])
+        info("*** Adding Links to %s ***\n" % (domain_name))
+        for link in domains_data[domain_name]["links"]:
+            node1 = Data().getBackEndName(getWholeName(domain_name, link[0]))
+            node2 = Data().getBackEndName(getWholeName(domain_name, link[1]))
+            node1 = nodes[node1]
+            node2 = nodes[node2]
+            l1 = net.addLink(node1, node2)
+            links.add(l1)
+
+    info("*** Starting network\n")
+    net.build()
+
+    info("*** Starting Controllers ***\n")
+    for controller in controllers.values():
+        info("%s " % controller.name)
+        controller.start()
     info("\n")
 
-    for name in domains.keys():
-        domains[name].start()
+    for switch in switches.values():
+        switch.start()
 
-    info("*** Running CLI for cross-domain network ***\n")
-    MCLI(**domains)
+    info("*** Running CLI\n")
+    CrossDomainCLI(net)
 
-    info("*** Stopping network ***\n")
-    interconnection.stop()
-
-    for name in domains:
-        info("*** Stopping " + name + " ***\n")
-        domains[name].stop()
+    info("*** Stopping network\n")
+    net.stop()

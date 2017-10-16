@@ -3,65 +3,65 @@
     "net1": {
       "controller": {
         "name": "c1",
-        "ip": "172.17.0.2",
+        "ip": "192.168.1.22",
         "port": 6633
       },
       "switches": {
-        "n1s1": {
+        "s1": {
           "class": "OVSSwitch"
         },
-        "n1s2": {
+        "s2": {
           "class": "OVSSwitch"
         }
       },
       "hosts": {
-        "n1h1": {
+        "h1": {
           "ip": "10.0.1.251"
         }
       },
       "links": [
-        ["n1s1", "n1s2"],
-        ["n1h1", "n1s2"]
+        ["s1", "s2"],
+        ["h1", "s2"]
       ]
     },
     "net2": {
       "controller": {
         "name": "c2",
-        "ip": "172.17.0.3",
+        "ip": "192.168.1.239",
         "port": 6633
       },
       "switches": {
-        "n2s1": {
+        "s1": {
           "class": "OVSSwitch"
         },
-        "n2s2": {
+        "s2": {
           "class": "OVSSwitch"
         },
-        "n2s3": {
+        "s3": {
           "class": "OVSSwitch"
         }
       },
       "hosts": {
-        "n2h1": {
+        "h1": {
           "ip": "10.0.2.251"
         },
-        "n2h2": {
+        "h2": {
           "ip": "10.0.2.252"
         }
       },
       "links":[
-        ["n2s1", "n2s2"],
-        ["n2s1", "n2s3"],
-        ["n2h1", "n2s2"],
-        ["n2h2", "n2s3"]
+        ["s1", "s2"],
+        ["s1", "s3"],
+        ["h1", "s2"],
+        ["h2", "s3"]
       ]
     }
   },
   "interconnections": [
     {
-      "node1": "n1s1",
-      "node2": "n2s1",
-      "addr1": "a6:89:7c:6e:c9:b3"
+      "node1": "net1:n1s1",
+      "node2": "net2:n2s1"
     }
   ]
 }
+>>>>>>> single_mn
