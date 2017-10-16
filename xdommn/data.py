@@ -32,3 +32,7 @@ class Data(object):
 
     def getFrontEndName(self, base_name):
         return self.reverse_name_map[base_name]
+
+    def addSameName(self, name):
+        self.name_map[name] = name
+        self.reverse_name_map[name] = name

@@ -15,4 +15,4 @@ def convert(data):
 
 
 def getWholeName(domain_name, node_name):
-    return node_name
+    return "%s_%s" % (domain_name, node_name)
