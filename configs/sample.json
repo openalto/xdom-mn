@@ -7,21 +7,21 @@
         "port": 6633
       },
       "switches": {
-        "n1s1": {
+        "s1": {
           "class": "OVSSwitch"
         },
-        "n1s2": {
+        "s2": {
           "class": "OVSSwitch"
         }
       },
       "hosts": {
-        "n1h1": {
+        "h1": {
           "ip": "10.0.1.251"
         }
       },
       "links": [
-        ["n1s1", "n1s2"],
-        ["n1h1", "n1s2"]
+        ["s1", "s2"],
+        ["h1", "s2"]
       ]
     },
     "net2": {
@@ -31,29 +31,29 @@
         "port": 6633
       },
       "switches": {
-        "n2s1": {
+        "s1": {
           "class": "OVSSwitch"
         },
-        "n2s2": {
+        "s2": {
           "class": "OVSSwitch"
         },
-        "n2s3": {
+        "s3": {
           "class": "OVSSwitch"
         }
       },
       "hosts": {
-        "n2h1": {
+        "h1": {
           "ip": "10.0.2.251"
         },
-        "n2h2": {
+        "h2": {
           "ip": "10.0.2.252"
         }
       },
       "links":[
-        ["n2s1", "n2s2"],
-        ["n2s1", "n2s3"],
-        ["n2h1", "n2s2"],
-        ["n2h2", "n2s3"]
+        ["s1", "s2"],
+        ["s1", "s3"],
+        ["h1", "s2"],
+        ["h2", "s3"]
       ]
     }
   },
