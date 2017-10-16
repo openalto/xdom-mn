@@ -17,8 +17,8 @@ setup(
     version='0.1',
     description='Mininet extension for cross-domain simulation.',
     url='https://github.com/openalto/xdom-mn',
-    author='Jensen Zhang',
-    author_email='hack@jensen-zhang.site',
+    author='Y.Jace Liu, Jensen Zhang',
+    author_email='yang.jace.liu@linux.com, hack@jensen-zhang.site',
     classifiers=[
         "License :: OSI Approved :: MIT License",
         "Programming Language :: Python",
