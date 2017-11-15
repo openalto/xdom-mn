@@ -31,12 +31,17 @@ def Start(data):
 
         info("*** Adding switches to %s ***\n" % (domain_name))
         for switch_name in domains_data[domain_name]["switches"].keys():
+            try:
+                ip = domains_data[domain_name]["switches"][switch_name]["ip"]
+            except KeyError:
+                ip = "127.0.0.1"
             switch_whole_name = getWholeName(domain_name, switch_name)
+            print(switch_whole_name)
             backend_name = Data().getNextName(switch_whole_name, prefix='s')
 
             # Register the controller name of the switch in Data singleton
             Data().controllers[backend_name] = c1
-            s1 = net.addSwitch(backend_name)
+            s1 = net.addSwitch(backend_name, ip=ip)
             switches[backend_name] = s1
             nodes[backend_name] = s1
 

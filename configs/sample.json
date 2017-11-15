@@ -1,66 +1,145 @@
 {
   "domains": {
-    "net1": {
+    "siteA": {
       "controller": {
-        "name": "c1",
-        "ip": "192.168.1.22",
-        "port": 6633
+        "name": "cA",
+        "ip": "192.168.1.21",
+        "port": 6634
       },
       "switches": {
-        "s1": {
-          "class": "OVSSwitch"
-        },
-        "s2": {
-          "class": "OVSSwitch"
+        "sw1": {
+          "class": "OVSSwitch",
+          "ip": "10.0.1.201"
         }
       },
       "hosts": {
         "h1": {
-          "ip": "10.0.1.251"
+          "ip": "10.0.1.101"
         }
       },
       "links": [
-        ["s1", "s2"],
-        ["h1", "s2"]
+        ["h1", "sw1"]
       ]
     },
-    "net2": {
+    "siteB": {
       "controller": {
-        "name": "c2",
-        "ip": "192.168.1.239",
-        "port": 6633
+        "name": "cB",
+        "ip": "192.168.1.21",
+        "port": 6635
       },
       "switches": {
-        "s1": {
-          "class": "OVSSwitch"
-        },
-        "s2": {
-          "class": "OVSSwitch"
-        },
-        "s3": {
-          "class": "OVSSwitch"
+        "sw2": {
+          "class": "OVSSwitch",
+          "ip": "10.0.2.201"
         }
       },
       "hosts": {
-        "h1": {
-          "ip": "10.0.2.251"
-        },
         "h2": {
-          "ip": "10.0.2.252"
+          "ip": "10.0.2.101"
         }
       },
       "links":[
-        ["s1", "s2"],
-        ["s1", "s3"],
-        ["h1", "s2"],
-        ["h2", "s3"]
+        ["h2", "sw2"]
+      ]
+    },
+    "siteC": {
+      "controller": {
+        "name": "cC",
+        "ip": "192.168.1.21",
+        "port": 6636
+      },
+      "switches": {
+        "sw3": {
+          "class": "OVSSwitch",
+          "ip": "10.0.3.201"
+        },
+        "sw4": {
+          "class": "OVSSwitch",
+          "ip": "10.0.3.202"
+        },
+        "sw5": {
+          "class": "OVSSwitch",
+          "ip": "10.0.3.203"
+        }
+      },
+      "hosts": {},
+      "links":[
+        ["sw3", "sw4"],
+        ["sw3", "sw5"],
+        ["sw4", "sw5"]
+      ]
+    },
+    "siteD": {
+      "controller": {
+        "name": "cD",
+        "ip": "192.168.1.21",
+        "port": 6637
+      },
+      "switches": {
+        "sw7": {
+          "class": "OVSSwitch",
+          "ip": "10.0.4.201"
+        },
+        "sw8": {
+          "class": "OVSSwitch",
+          "ip": "10.0.4.202"
+        },
+        "sw9": {
+          "class": "OVSSwitch",
+          "ip": "10.0.4.203"
+        }
+      },
+      "hosts": {
+        "h3": {
+          "ip": "10.0.4.101"
+        }
+      },
+      "links":[
+        ["sw7", "sw8"],
+        ["sw7", "sw9"],
+        ["sw8", "sw9"],
+        ["h3", "sw9"],
+        ["h3", "sw8"]
+      ]
+    },
+    "siteE": {
+      "controller": {
+        "name": "cE",
+        "ip": "192.168.1.21",
+        "port": 6638
+      },
+      "switches": {
+        "sw6": {
+          "class": "OVSSwitch",
+          "ip": "10.0.5.201"
+        }
+      },
+      "hosts": {
+        "h4": {
+          "ip": "10.0.5.101"
+        }
+      },
+      "links":[
+        ["sw6", "h4"]
       ]
     }
   },
   "interconnections": [
     {
-      "node1": "net1_s1",
-      "node2": "net2_s1"
+      "node1": "siteA_sw1",
+      "node2": "siteC_sw3"
+    },
+    {
+      "node1": "siteB_sw2",
+      "node2": "siteC_sw3"
+    },
+    {
+      "node1": "siteE_sw6",
+      "node2": "siteC_sw5"
+    },
+    {
+      "node1": "siteD_sw7",
+      "node2": "siteC_sw5"
     }
   ]
 }
