@@ -47,9 +47,10 @@ def Start(data):
 
         info("*** Adding hosts to %s ***\n" % (domain_name))
         for host_name in domains_data[domain_name]["hosts"].keys():
+            ip = domains_data[domain_name]["hosts"][host_name]["ip"]
             host_whole_name = getWholeName(domain_name, host_name)
             backend_name = Data().getNextName(host_whole_name, prefix='h')
-            h1 = net.addHost(backend_name)
+            h1 = net.addHost(backend_name, ip=ip)
             hosts[backend_name] = h1
             nodes[backend_name] = h1
 
