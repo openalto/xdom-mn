@@ -1,12 +1,12 @@
+from mininet.link import OVSLink
 from mininet.log import info
 from mininet.net import Mininet
-from mininet.node import OVSSwitch, RemoteController, Host
-from mininet.link import OVSLink
+from mininet.node import Host, OVSSwitch, RemoteController
 
+from .crossdomain import (CrossDomainCLI, CrossDomainLink, CrossDomainMininet,
+                          CrossDomainSwitch)
 from .data import Data
-
 from .utils import convert, getWholeName
-from .crossdomain import CrossDomainSwitch, CrossDomainCLI, CrossDomainMininet, CrossDomainLink
 
 
 def Start(data):
@@ -18,14 +18,19 @@ def Start(data):
     nodes = dict()
     switches = dict()
     controllers = dict()
-    net = CrossDomainMininet(controller=RemoteController, switch=CrossDomainSwitch, link=CrossDomainLink, host=Host)
+    net = CrossDomainMininet(
+        controller=RemoteController,
+        switch=CrossDomainSwitch,
+        link=CrossDomainLink,
+        host=Host)
 
     for domain_name in domains_data.keys():
         controller_name = domains_data[domain_name]["controller"]["name"]
         controller_ip = domains_data[domain_name]["controller"]["ip"]
         controller_port = domains_data[domain_name]["controller"]["port"]
         info("*** Connecting to Remote controller: %s \n" % (controller_name))
-        c1 = net.addController(controller_name, ip=controller_ip, port=controller_port)
+        c1 = net.addController(
+            controller_name, ip=controller_ip, port=controller_port)
         controllers[controller_name] = c1
         Data().addSameName(controller_name)
 
