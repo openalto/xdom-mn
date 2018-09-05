@@ -44,7 +44,7 @@ def Start(data):
 
             # Register the controller name of the switch in Data singleton
             Data().controllers[backend_name] = c1
-            s1 = net.addSwitch(backend_name, ip=ip)
+            s1 = net.addSwitch(backend_name, ip=ip, protocols="OpenFlow13")
             switches[backend_name] = s1
             nodes[backend_name] = s1
 
