@@ -22,7 +22,7 @@ def Start(data):
         link=CrossDomainLink,
         host=Host)
 
-    for domain_name in domains_data.keys():
+    for domain_name in sorted(domains_data.keys()):
         controller_name = domains_data[domain_name]["controller"]["name"]
         controller_ip = domains_data[domain_name]["controller"]["ip"]
         controller_port = domains_data[domain_name]["controller"]["port"]
@@ -33,7 +33,7 @@ def Start(data):
         Data().addSameName(controller_name)
 
         info("*** Adding switches to %s ***\n" % (domain_name))
-        for switch_name in domains_data[domain_name]["switches"].keys():
+        for switch_name in sorted(domains_data[domain_name]["switches"].keys()):
             try:
                 ip = domains_data[domain_name]["switches"][switch_name]["ip"]
             except KeyError:
@@ -49,7 +49,7 @@ def Start(data):
             nodes[backend_name] = s1
 
         info("*** Adding hosts to %s ***\n" % (domain_name))
-        for host_name in domains_data[domain_name]["hosts"].keys():
+        for host_name in sorted(domains_data[domain_name]["hosts"].keys()):
             ip = domains_data[domain_name]["hosts"][host_name]["ip"]
             host_whole_name = getWholeName(domain_name, host_name)
             backend_name = Data().getNextName(host_whole_name, prefix='h')
@@ -58,7 +58,7 @@ def Start(data):
             nodes[backend_name] = h1
 
         info("*** Adding Links to %s ***\n" % (domain_name))
-        for link in domains_data[domain_name]["links"]:
+        for link in sorted(domains_data[domain_name]["links"]):
             node1 = Data().getBackEndName(getWholeName(domain_name, link[0]))
             node2 = Data().getBackEndName(getWholeName(domain_name, link[1]))
             node1 = nodes[node1]
@@ -68,7 +68,7 @@ def Start(data):
             links.add(l1)
 
     interconnection_data = convert(data["interconnections"])
-    for interconnection in interconnection_data:
+    for interconnection in sorted(interconnection_data):
         node1 = Data().getBackEndName(interconnection["node1"])
         node2 = Data().getBackEndName(interconnection["node2"])
         node1 = nodes[node1]
