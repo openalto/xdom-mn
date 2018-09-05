@@ -2,7 +2,7 @@
 
 from mininet.cli import CLI
 from mininet.net import Mininet
-from mininet.node import OVSSwitch, Link
+from mininet.node import OVSSwitch
 from mininet.link import TCLink
 from mininet.log import error
 

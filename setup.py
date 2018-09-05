@@ -14,7 +14,7 @@ def files(dirname):
 
 setup(
     name='xdommn',
-    version='0.1',
+    version='0.2',
     description='Mininet extension for cross-domain simulation.',
     url='https://github.com/openalto/xdom-mn',
     author='Y.Jace Liu, Jensen Zhang',
