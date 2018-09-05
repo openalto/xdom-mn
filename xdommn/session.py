@@ -65,7 +65,11 @@ def Start(data):
             node2 = Data().getBackEndName(getWholeName(domain_name, link[1]))
             node1 = nodes[node1]
             node2 = nodes[node2]
-            l1 = net.addLink(node1, node2)
+            try:
+                props = link[2]
+            except Exception:
+                props = {}
+            l1 = net.addLink(node1, node2, bw=100)
             links.add(l1)
 
     interconnection_data = convert(data["interconnections"])

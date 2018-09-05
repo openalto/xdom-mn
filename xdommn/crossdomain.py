@@ -3,6 +3,7 @@
 from mininet.cli import CLI
 from mininet.net import Mininet
 from mininet.node import OVSSwitch, Link
+from mininet.link import TCLink
 from mininet.log import error
 
 from .data import Data
@@ -43,7 +44,7 @@ class CrossDomainMininet(Mininet):
         return item in self.frontEndName
 
 
-class CrossDomainLink(Link):
+class CrossDomainLink(TCLink):
     def __str__(self):
         (intf1, intf2) = (self.intf1.__str__(), self.intf2.__str__())
         (intf1, intf2) = [i.split('-') for i in (intf1, intf2)]
