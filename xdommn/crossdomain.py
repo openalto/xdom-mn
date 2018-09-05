@@ -96,5 +96,9 @@ class CrossDomainCLI(CLI):
             # Run cmd on node:
             node.sendCmd( rest )
             self.waitForNode( node )
+        elif first == "name":
+            rest = args.split( ' ' )
+            backend_names = [ self.mn[front].name if front in self.mn else "NULL" for front in rest ]
+            print ", ".join(backend_names)
         else:
             error( '*** Unknown command: %s\n' % line )
