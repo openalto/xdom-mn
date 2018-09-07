@@ -6,8 +6,7 @@ from .crossdomain import (CrossDomainCLI, CrossDomainLink, CrossDomainMininet,
 from .data import Data
 from .utils import convert, getWholeName
 
-
-def Start(data):
+def Start(data, **args):
     "Create a network from semi-scratch with multiple controllers."
 
     domains_data = convert(data["domains"])
@@ -90,7 +89,7 @@ def Start(data):
         switch.start()
 
     info("*** Running CLI\n")
-    CrossDomainCLI(net)
+    CrossDomainCLI(net, **args)
 
     info("*** Stopping network\n")
     net.stop()

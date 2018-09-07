@@ -20,6 +20,11 @@ def InitParser():
                                      description="Start an inter-domain mininet")
     parser.add_argument("-c", help="choose a config file",
                         metavar="CONFIG", required=True)
+    parser.add_argument("--zmq-thread", dest="zmq_thread", action="store_true")
+    parser.add_argument("--no-zmq-thread", dest="zmq_thread", action="store_false")
+    parser.set_defaults(zmq_thread=True)
+    parser.add_argument("--zmq-ip", default="127.0.0.1")
+    parser.add_argument("--zmq-port", type=int, default=12333)
     args = parser.parse_args()
     return args
 
@@ -35,4 +40,4 @@ if __name__ == '__main__':
     setLogLevel('info')
     args = InitParser()
     data = JSONFileParse(args.c)
-    xdommn.session.Start(data)
+    xdommn.session.Start(data, **vars(args))

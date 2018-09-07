@@ -10,6 +10,25 @@ from .data import Data
 
 from itertools import chain
 
+from threading import Thread
+import zmq
+
+class ZMQThread(Thread):
+    def __init__(self, cli, zmq_ip, zmq_port):
+        super(ZMQThread, self).__init__()
+        self._cli = cli
+        self._zmq_ip = zmq_ip
+        self._zmq_port = zmq_port
+
+    def run(self):
+        context = zmq.Context()
+        socket = context.socket(zmq.REP)
+        socket.bind('tcp://%s:%d' % (self._zmq_ip, self._zmq_port))
+        while True:
+            msg = socket.recv()
+            print(msg)
+            socket.send(msg)
+            self._cli.onecmd(msg)
 
 class CrossDomainSwitch(OVSSwitch):
     """ Custom switch to connect to different controllers
@@ -53,6 +72,16 @@ class CrossDomainLink(TCLink):
 
 
 class CrossDomainCLI(CLI):
+    def __init__(self, net, zmq_thread=True, zmq_ip="127.0.0.1", zmq_port=12333, **args):
+
+        if zmq_thread:
+            zmq_thread = ZMQThread(self, zmq_ip, zmq_port)
+            zmq_thread.daemon = True
+            zmq_thread.start()
+            print("Start ZMQ on address: tcp://%s:%d" % (zmq_ip, zmq_port))
+
+        CLI.__init__(self, mininet=net)
+
     prompt = "cross domain> "
 
     helpStr = (
