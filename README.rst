@@ -25,7 +25,7 @@ Installation
 
 .. code-block:: sh
 
-    python setup.py install
+    sudo pip install -e .
 
 Usage
 -----

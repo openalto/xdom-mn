@@ -26,6 +26,7 @@ setup(
         "Intended Audience :: Developers",
         "Topic :: System :: Emulators",
     ],
+    install_requires=read('requirements.txt').splitlines(),
     license='MIT',
     long_description=read('README.rst'),
     packages=['xdommn'],
