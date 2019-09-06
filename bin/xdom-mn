@@ -40,4 +40,4 @@ if __name__ == '__main__':
     setLogLevel('info')
     args = InitParser()
     data = JSONFileParse(args.c)
-    xdommn.session.Start(data, **vars(args))
+    xdommn.session.start_with_cli(data, **vars(args))

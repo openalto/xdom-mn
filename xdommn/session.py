@@ -6,9 +6,21 @@ from .crossdomain import (CrossDomainCLI, CrossDomainLink, CrossDomainMininet,
 from .data import Data
 from .utils import convert, getWholeName
 
-def Start(data, **args):
-    "Create a network from semi-scratch with multiple controllers."
+class Session:
 
+    def __init__(self, data):
+        self.data = data
+        self.net = None
+
+    def start(self):
+        self.net = start_session(self.data)
+
+    def stop(self):
+        info("*** Stopping network\n")
+        if self.net:
+            net.stop()
+
+def start_session(data):
     domains_data = convert(data["domains"])
     links = set()
     hosts = dict()
@@ -53,7 +65,7 @@ def Start(data, **args):
             host_whole_name = getWholeName(domain_name, host_name)
             backend_name = Data().getNextName(host_whole_name, prefix='h')
             h1 = net.addHost(backend_name, **domains_data[domain_name]['hosts'][host_name])
-            print host_whole_name
+            print(host_whole_name)
             hosts[backend_name] = h1
             nodes[backend_name] = h1
 
@@ -87,6 +99,12 @@ def Start(data, **args):
 
     for switch in switches.values():
         switch.start()
+
+    return net
+
+def start_with_cli(data, **args):
+    "Create a network from semi-scratch with multiple controllers."
+    net = start_session(data)
 
     info("*** Running CLI\n")
     CrossDomainCLI(net, **args)
