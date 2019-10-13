@@ -19,6 +19,12 @@ class Session:
         info("*** Stopping network\n")
         if self.net:
             self.net.stop()
+            del self.net
+        self.net = None
+
+    def __del__(self):
+        del self.data
+        del self.net
 
 def start_session(data):
     domains_data = convert(data["domains"])
